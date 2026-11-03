@@ -1,0 +1,6 @@
+{
+  "name": "Northern HeatEx Corporation | Precision Thermal & Aerospace Engineering",
+  "description": "Ultra-luxurious high-precision engineering portal for Northern HeatEx Corporation (Noor Engineering Works since 1983). ASME & TEMA certified Heat Exchangers, Stator Air Coolers, White Metal Bearing Re-Babbitting, and Retubing solutions with AI Engineering Assistant.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

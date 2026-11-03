@@ -1,0 +1,150 @@
+import express from "express";
+import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
+import { GoogleGenAI } from "@google/genai";
+
+dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const app = express();
+const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
+
+app.use(express.json({ limit: "20mb" }));
+
+// Initialize GoogleGenAI client if a real API key is present
+let ai: GoogleGenAI | null = null;
+const apiKey = process.env.GEMINI_API_KEY;
+if (apiKey && !apiKey.startsWith("MY_") && apiKey !== "placeholder") {
+  ai = new GoogleGenAI({
+    apiKey,
+    httpOptions: {
+      headers: {
+        "User-Agent": "aistudio-build",
+      },
+    },
+  });
+}
+
+const SYSTEM_INSTRUCTION = `
+You are the Chief AI Thermal & Rotating Equipment Consultant for Northern HeatEx Corporation (formerly founded in 1983 as Noor Engineering Works, based in Haridwar, Uttarakhand, India).
+Tone: NASA-grade aerospace engineering precision, ultra-luxurious, authoritative, technical, polite, and rapid.
+
+Company Key Facts:
+- Company Name: Northern HeatEx Corporation (Legacy: Noor Engineering Works since 1983 - over 40+ years legacy).
+- Location: Shastri Nagar, Jwalapur, Haridwar, Uttarakhand - 249407, India.
+- Contacts: Phone & Mobile: +91-9760362826, +91-9557565742, +91-8532823883.
+- Emails: info@northernheatex.co.in, northernheatex@outlook.in.
+- Facilities: 15,000 sq. ft. modern facility in Haridwar, CNC turning centers up to 2500mm diameter, precision boring, milling, shell rolling up to 25mm thickness, ASME Sec. IX certified welders (GTAW, SMAW, SAW), CMM dimensional verification, Hydrostatic test bench up to 100 bar, NDT facilities (DPT, MPI, UT, PMI).
+- Key Offerings:
+  1. Heat Exchangers: Shell & Tube (fixed tubesheet, U-tube, floating head), Stator Air Coolers / Generator Coolers, Surface Condensers, Bearing & Oil Coolers, Tube Bundles, Intercoolers, Aftercoolers.
+  2. Precision Retubing & Refurbishment: 10-step refurbishment methodology, tube replacement in copper alloys (Admiralty, Cu-Ni 70/30, 90/10), Stainless Steel (304/316L/321), Titanium Grade 2, Duplex & Super Duplex, Inconel, Monel, Hastelloy. Restores 10-15 years operating life with 40-60% savings vs new equipment.
+  3. Bearing Systems & White Metal Re-Babbitting: Hydro turbine guide & journal bearings, thrust bearing pads (Francis, Kaplan, Pelton turbines, generator bearings), tin-based and lead-based babbitt alloys, static & centrifugal casting, precision machining to exact clearances, ultrasonic bond testing.
+  4. Hydro Turbine Components: Guide vanes, shaft sleeves, shaft seal journals, wearing rings, labyrinth seals, reverse engineering.
+- Standards & Certifications: ASME Sec. VIII Div. 1, TEMA (Class R, C, B), ASTM, ISO 9001, ASME B31.1 & B31.3. Complete test certificates, mill test reports, hydro test at 1.5x design pressure, helium leak testing.
+- Prestigious Clients: NHPC Ltd., UJVN Ltd., BBMB (Bhakra Beas Management Board), NPCIL Ltd. (Nuclear Power Corporation of India), HPSEB Ltd., RJVNL, JKSPDC Ltd., Damodar Valley Corporation (DVC), TGGENCO, Kerala State Electricity Board (KSEB).
+
+Format formulas, standards, engineering advice with clean markdown. When advising on RFQ or inquiries, mention that drawings and specifications can be submitted directly via the inquiry portal or WhatsApp at +91-9760362826. Keep answers concise, highly technical, and aerospace-grade precise.
+`;
+
+function getDomainKnowledgeReply(prompt: string): string {
+  const lower = prompt.toLowerCase();
+  if (lower.includes("stator") || lower.includes("air cooler")) {
+    return `**Stator Air Coolers (Generator Coolers) — Technical Overview**\n\n` +
+      `• **Application:** Hydro and Turbo generator cooling systems for continuous heat dissipation.\n` +
+      `• **Tube Metallurgy:** High-integrity Cupro-Nickel (90/10 or 70/30), Stainless Steel 304/316L, or Admiralty Brass with spirally wound aluminum or copper fins.\n` +
+      `• **Design Codes:** ASME Sec. VIII Div. 1 & TEMA standards.\n` +
+      `• **Pressure Rating:** Tested hydrostatically up to 1.5x design pressure with zero leakage tolerance.\n` +
+      `• **Northern HeatEx Advantage:** Direct replacement for BHEL, Alstom, Voith, and Andritz generator designs with 100% dimensional equivalence. Contact our Haridwar engineering cell at +91-9760362826 for technical sizing.`;
+  } else if (lower.includes("shell and tube") || lower.includes("heat exchanger") || lower.includes("condenser")) {
+    return `**Shell & Tube Heat Exchangers — Precision Specifications**\n\n` +
+      `• **Configurations:** Fixed Tube Sheet (TEMA BEM, AEM), U-Tube (BEU, CFU), and Floating Head (AES, AET) for thermal expansion relief.\n` +
+      `• **Thermal Capacity:** Engineered for power generation, petrochemical, and nuclear utilities up to 15 tons unit weight and 12m bundle lengths.\n` +
+      `• **Material Matrix:** Carbon Steel (SA-516 Gr 70), SS 304/316L/321, Titanium Grade 2, Duplex 2205, Inconel 625, Monel 400.\n` +
+      `• **Testing:** 100 bar hydrostatic testing, Helium mass spectrometry leak detection, and CMM laser dimensional validation.\n` +
+      `• **Submit Drawings:** Send CAD or data sheets via the Inquiry tab or to info@northernheatex.co.in.`;
+  } else if (lower.includes("babbitt") || lower.includes("bearing") || lower.includes("rebabbitt")) {
+    return `**White Metal Bearing Re-Babbitting & Hydro Turbine Bearings**\n\n` +
+      `• **Alloys:** High-grade Tin-based Babbitt (ASTM B23 Grade 2 / TEGO-STAR) and Lead-based alloys for heavy duty rotating equipment.\n` +
+      `• **Components Serviced:** Hydro turbine guide bearings, journal bearings, spherical thrust bearing pads (Francis, Kaplan, Pelton), and generator bearings.\n` +
+      `• **Process:** Chemical degreasing → Metallurgical bond preparation → Centrifugal / Static casting under controlled thermal gradients → CNC precision boring up to 2500mm diameter → Ultrasonic bond testing (NDT UT per ISO 4386-1) → Clearance verification within ±0.01mm.\n` +
+      `• **Turnaround:** Rapid emergency turnaround available for planned and unplanned utility outages.`;
+  } else if (lower.includes("retubing") || lower.includes("refurbish")) {
+    return `**Precision Retubing & Complete Refurbishment Protocol**\n\n` +
+      `• **Cost Efficiency:** Defer capital replacement by saving 40–60% while extending equipment lifecycle by 10–15 years.\n` +
+      `• **10-Step Proprietary Process:** Detailed ultrasonic thickness measurement → Ligament & tube sheet inspection → Specialized safe tube extraction without tube sheet damage → Tube hole re-rolling & serration cleaning → Tube insertion & precision hydraulic/roller expansion → 1.5x Hydrostatic & Helium leak testing → Surface coating & site commissioning.\n` +
+      `• **Tube Materials:** Titanium Gr 2, Cupro-Nickel 90/10, Stainless Steel 316L, Brass, and Duplex.`;
+  } else if (lower.includes("client") || lower.includes("customer") || lower.includes("experience") || lower.includes("nhpc") || lower.includes("npcil")) {
+    return `**Institutional Credentials & Utility Track Record**\n\n` +
+      `Since 1983 (founded as Noor Engineering Works), Northern HeatEx Corporation has been a trusted supplier to premier state and federal power entities:\n` +
+      `• **NHPC Ltd.** (National Hydroelectric Power Corporation)\n` +
+      `• **NPCIL Ltd.** (Nuclear Power Corporation of India)\n` +
+      `• **BBMB** (Bhakra Beas Management Board)\n` +
+      `• **UJVN Ltd.** (Uttarakhand Jal Vidyut Nigam)\n` +
+      `• **HPSEB, RJVNL, JKSPDC, DVC, TGGENCO, KSEB**\n\n` +
+      `All components meet ASME, TEMA, and nuclear-grade quality documentation standards.`;
+  } else {
+    return `**Northern HeatEx Corporation — Mission Engineering Desk**\n\n` +
+      `Welcome to Northern HeatEx Corporation (Noor Engineering Works since 1983, Haridwar, India). I can assist with:\n` +
+      `1. **Heat Exchanger Sizing & Metallurgy Selection** (Shell & Tube, Stator Air Coolers, Surface Condensers)\n` +
+      `2. **Retubing & Refurbishment Sizing** (Cu-Ni, Titanium Gr 2, SS 316L, 10-step protocol)\n` +
+      `3. **White Metal Bearing Re-Babbitting** (ASTM B23 Gr 2 tin-base, centrifugal casting, ultrasonic bond checks)\n` +
+      `4. **ASME Sec. VIII & TEMA Standard Queries**\n` +
+      `5. **RFQ / Sizing Assistance**\n\n` +
+      `Please state your technical query, operating fluid temperatures, or design pressures.`;
+  }
+}
+
+// AI Assistant endpoint
+app.post("/api/ai/chat", async (req, res) => {
+  const { messages, query } = req.body;
+  const prompt = query || (messages && messages[messages.length - 1]?.content) || "Hello";
+
+  if (ai) {
+    try {
+      const response = await ai.models.generateContent({
+        model: "gemini-3.8-flash",
+        contents: prompt,
+        config: {
+          systemInstruction: SYSTEM_INSTRUCTION,
+        },
+      });
+
+      const reply = response.text;
+      if (reply && reply.trim()) {
+        return res.json({ reply });
+      }
+    } catch (err: any) {
+      console.warn("Gemini API call returned error, falling back to local domain intelligence:", err?.message || err);
+    }
+  }
+
+  // Graceful domain knowledge fallback
+  const fallbackReply = getDomainKnowledgeReply(prompt);
+  return res.json({ reply: fallbackReply });
+});
+
+// Setup Vite middleware in dev or static files in production
+async function startServer() {
+  if (process.env.NODE_ENV !== "production") {
+    const { createServer: createViteServer } = await import("vite");
+    const vite = await createViteServer({
+      server: { middlewareMode: true },
+      appType: "spa",
+    });
+    app.use(vite.middlewares);
+  } else {
+    app.use(express.static(path.resolve(__dirname, "dist")));
+    app.get("*", (req, res) => {
+      res.sendFile(path.resolve(__dirname, "dist", "index.html"));
+    });
+  }
+
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Northern HeatEx aerospace engineering server running at http://localhost:${PORT}`);
+  });
+}
+
+startServer();
