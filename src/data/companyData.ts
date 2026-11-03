@@ -2,12 +2,13 @@ import { EquipmentItem, ClientEntity, GalleryMediaItem } from '../types';
 
 export const COMPANY_PROFILE = {
   name: "Northern HeatEx Corporation",
-  legacyName: "Noor Engineering Works",
-  foundedYear: 1983,
+  parentCompany: "Noor Engineering Works",
+  parentCompanyRole: "Parent Company & Veteran Unit dedicated to PSUs and State Undertakings",
+  newGenerationRole: "New Generation Enterprise for Nationwide & International Projects",
   tagline: "Engineering Reliability Through Precision Manufacturing & Thermal Excellence",
   address: "Shastri Nagar, Jwalapur, Haridwar, Uttarakhand - 249407, India",
-  phoneNumbers: ["+91-9760362826", "+91-9557565742", "+91-8532823883"],
-  primaryPhone: "+919760362826",
+  phoneNumbers: ["+91-8532823883", "+91-9760362826", "+91-9557565742"],
+  primaryPhone: "+918532823883",
   emails: ["info@northernheatex.co.in", "northernheatex@outlook.in"],
   website: "www.northernheatex.co.in",
   workingHours: "Mon–Sat: 9:00 AM – 6:00 PM IST (24/7 Emergency Outage Support Available)",
@@ -21,7 +22,7 @@ export const COMPANY_PROFILE = {
 
 export const BROCHURE_PAGES = [
   { page: 1, title: "Cover: Engineering Reliability & Precision", image: "/public/assets/aistudio/1_d8d31b9c.png", category: "Brochure Cover" },
-  { page: 2, title: "Company Profile & Milestones Since 1983", image: "/public/assets/aistudio/2_ec6a8edc.png", category: "Milestones" },
+  { page: 2, title: "Company Profile & Engineering Milestones", image: "/public/assets/aistudio/2_ec6a8edc.png", category: "Milestones" },
   { page: 3, title: "Comprehensive Engineering Solutions", image: "/public/assets/aistudio/3_a9774b6e.png", category: "Capabilities" },
   { page: 4, title: "Precision Manufacturing Facility & NDT", image: "/public/assets/aistudio/4_f4ac98d1.png", category: "Manufacturing" },
   { page: 5, title: "Heat Exchanger Solutions & Product Range", image: "/public/assets/aistudio/5_546d848b.png", category: "Products" },
@@ -29,7 +30,7 @@ export const BROCHURE_PAGES = [
   { page: 7, title: "Bearing Systems & White Metal Re-Babbitting", image: "/public/assets/aistudio/7_90a9011b.png", category: "Bearings" },
   { page: 8, title: "Quality Assurance & Material Documentation", image: "/public/assets/aistudio/8_c4862b3d.png", category: "Quality" },
   { page: 9, title: "Industries Served (Nuclear, Hydro, Thermal, Oil & Gas)", image: "/public/assets/aistudio/9_ec218f7f.png", category: "Industries" },
-  { page: 10, title: "Why Choose Northern HeatEx: 40+ Years Legacy", image: "/public/assets/aistudio/10_e11030ce.png", category: "Advantages" },
+  { page: 10, title: "Why Choose Northern HeatEx: Decades of Engineering Legacy", image: "/public/assets/aistudio/10_e11030ce.png", category: "Advantages" },
   { page: 11, title: "Our Valued Clients (NHPC, NPCIL, BBMB, UJVNL)", image: "/public/assets/aistudio/11_b466fd01.png", category: "Clients" },
   { page: 12, title: "Corporate Office & Contact Info", image: "/public/assets/aistudio/12_88a10642.png", category: "Contact" },
 ];
@@ -359,9 +360,9 @@ export const INITIAL_GALLERY: GalleryMediaItem[] = [
     title: "White Metal Bearing Re-Babbitting Shopfloor Inspection",
     category: "bearings",
     url: "/public/assets/aistudio/4_f4ac98d1.png",
-    description: "Engineers inspecting precision-machined white metal bearing blocks and thrust pads on the Northern HeatEx Haridwar shopfloor using digital coordinate gauges.",
+    description: "Engineers inspecting precision-machined white metal bearing blocks and thrust pads on the Northern HeatEx Corporation shopfloor using digital coordinate gauges.",
     specs: "Tin-based ASTM B23 Gr 2 alloy lining, CMM clearance check ±0.005mm",
-    dateAdded: "Haridwar Works",
+    dateAdded: "Northern HeatEx Facility",
   },
   {
     id: "gal-4",
@@ -371,7 +372,7 @@ export const INITIAL_GALLERY: GalleryMediaItem[] = [
     url: "/public/assets/aistudio/7_90a9011b.png",
     description: "Precision-machined white metal lined thrust bearing pads and circular guide bearing segments for hydro turbine installations.",
     specs: "Centrifugally cast babbitt, ISO 4386-1 Class A ultrasonic bond",
-    dateAdded: "Haridwar Works",
+    dateAdded: "Northern HeatEx Facility",
   },
   {
     id: "gal-5",
@@ -389,9 +390,9 @@ export const INITIAL_GALLERY: GalleryMediaItem[] = [
     title: "Refurbished Tube Bundles and Heat Exchanger Cores",
     category: "retubing",
     url: "/public/assets/aistudio/6_9096fd42.png",
-    description: "Shopfloor view of completely refurbished U-tube bundles and stator cooling modular stacks with brass and copper metallurgy.",
+    description: "Shopfloor view of completely refurbished U-tube bundles and stator cooling modular stacks with brass and copper metallurgy at Northern HeatEx Corporation.",
     specs: "10-Step Refurbishment Protocol completed, 1.5x hydro tested",
-    dateAdded: "Brochure Archive",
+    dateAdded: "Northern HeatEx Facility",
   },
   {
     id: "gal-7",
@@ -399,9 +400,9 @@ export const INITIAL_GALLERY: GalleryMediaItem[] = [
     title: "2,500mm CNC Vertical Machining Center Operations",
     category: "shopfloor",
     url: "/public/assets/aistudio/8_c4862b3d.png",
-    description: "High-precision vertical boring and turning machine finishing large diameter bearing rings and heat exchanger flanges at Haridwar facility.",
+    description: "High-precision vertical boring and turning machine finishing large diameter bearing rings and heat exchanger flanges at Northern HeatEx Corporation.",
     specs: "CNC turning up to 2,500mm diameter, tolerance ±0.01mm",
-    dateAdded: "Haridwar Works",
+    dateAdded: "Northern HeatEx Facility",
   },
   {
     id: "gal-8",
@@ -409,9 +410,9 @@ export const INITIAL_GALLERY: GalleryMediaItem[] = [
     title: "Modern 15,000 Sq. Ft. Manufacturing Bay & Fabrication",
     category: "shopfloor",
     url: "/public/assets/aistudio/2_ec6a8edc.png",
-    description: "Interior view of the heavy fabrication and assembly bay equipped with 15-ton overhead cranes, hydro test bays, and welding stations.",
+    description: "Interior view of the heavy fabrication and assembly bay at Northern HeatEx Corporation equipped with 15-ton overhead cranes, hydro test bays, and welding stations.",
     specs: "ASME Sec. IX GTAW/SMAW/SAW certified welders, 100 bar hydro bench",
-    dateAdded: "Haridwar Facility",
+    dateAdded: "Northern HeatEx Facility",
   },
   {
     id: "gal-9",

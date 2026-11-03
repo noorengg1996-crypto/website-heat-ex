@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowRight, Check } from 'lucide-react';
+import { EditableImage } from './EditableImage';
 
 interface BabbittBearingSectionProps {
   onStartBearingInquiry: () => void;
@@ -60,16 +61,24 @@ export const BabbittBearingSection: React.FC<BabbittBearingSectionProps> = ({
             
             {/* Visual Column */}
             <div className="lg:col-span-6 space-y-4">
-              <div className="rounded-2xl overflow-hidden aspect-video bg-black border border-white/10">
-                <img
-                  src="/public/assets/aistudio/7_90a9011b.png"
-                  alt="Thrust Bearing Lined Pads Haridwar Shopfloor"
+              <div className="flex items-center justify-between px-1">
+                <span className="text-xs text-zinc-400 font-medium">Noor Engineering Works Shopfloor: Finished Thrust Pads</span>
+                <span className="text-[11px] font-mono text-zinc-500">ASTM B23 Tin-Base</span>
+              </div>
+
+              <div className="rounded-2xl overflow-hidden aspect-video bg-black border border-white/10 relative">
+                <EditableImage
+                  imageKey="bearing_section_feature"
+                  label="Thrust Bearing Finished Pads (Noor Engineering Works)"
+                  fallbackUrl="/public/assets/aistudio/7_90a9011b.png"
+                  alt="Thrust Bearing Lined Pads Noor Engineering Works Shopfloor"
+                  containerClassName="w-full h-full"
                   className="w-full h-full object-cover"
                 />
               </div>
+
               <div className="text-xs text-zinc-400 flex items-center justify-between px-1">
-                <span>Haridwar Shopfloor: Finished Thrust Pads</span>
-                <span className="font-mono">ASTM B23 Tin-Base Babbitt</span>
+                <span>Ultrasonic bond inspected per ISO 4386-1 Class A (Click photo to edit)</span>
               </div>
             </div>
 

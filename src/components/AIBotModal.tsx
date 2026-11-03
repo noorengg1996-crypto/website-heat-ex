@@ -73,7 +73,7 @@ export const AIBotModal: React.FC<AIBotModalProps> = ({
       });
 
       const data = await res.json();
-      const botReply = data.reply || data.error || "Please contact our engineering team in Haridwar at +91-9760362826 for technical sizing.";
+      const botReply = data.reply || data.error || "Please contact our engineering team in Haridwar at +91-8532823883 for technical sizing.";
 
       const botMsg: ChatMessage = {
         id: `bot-${Date.now()}`,

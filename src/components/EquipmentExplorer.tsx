@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { ArrowRight, Check } from 'lucide-react';
+import { ArrowRight, Check, Camera, Image as ImageIcon } from 'lucide-react';
 import { EQUIPMENT_LIST } from '../data/companyData';
 import { EquipmentItem } from '../types';
+import { EditableImage } from './EditableImage';
+import { useSiteImages } from '../context/ImageContext';
 
 interface EquipmentExplorerProps {
   onSelectForInquiry: (equipmentName: string) => void;
@@ -14,9 +16,21 @@ export const EquipmentExplorer: React.FC<EquipmentExplorerProps> = ({
 }) => {
   const [selectedId, setSelectedId] = useState<string>('shell-and-tube');
   const [showShopfloor, setShowShopfloor] = useState<boolean>(false);
+  const { openEditor, isOwner } = useSiteImages();
 
   const selectedItem: EquipmentItem =
     EQUIPMENT_LIST.find((item) => item.id === selectedId) || EQUIPMENT_LIST[0];
+
+  const currentImageKey =
+    selectedItem.id === 'shell-and-tube'
+      ? (showShopfloor ? 'shell_tube_shopfloor' : 'shell_tube_natural')
+      : selectedItem.id === 'stator-air-coolers'
+      ? (showShopfloor ? 'stator_cooler_shopfloor' : 'stator_cooler_natural')
+      : selectedItem.id === 'white-metal-bearings'
+      ? (showShopfloor ? 'bearings_shopfloor' : 'bearings_natural')
+      : (showShopfloor ? 'retubing_shopfloor' : 'retubing_natural');
+
+  const currentImageLabel = `${selectedItem.name} (${showShopfloor ? 'Northern HeatEx Corporation Shopfloor' : 'Natural Field'})`;
 
   return (
     <section id="equipment" className="py-24 bg-black border-t border-white/10">
@@ -67,26 +81,57 @@ export const EquipmentExplorer: React.FC<EquipmentExplorerProps> = ({
             
             {/* Visual Column */}
             <div className="lg:col-span-7 space-y-3">
-              <div className="relative rounded-2xl overflow-hidden aspect-video sm:aspect-[16/10] bg-zinc-900 border border-white/10">
-                <img
-                  src={showShopfloor ? selectedItem.brochurePhoto : selectedItem.naturalPhoto}
-                  alt={selectedItem.name}
-                  className="w-full h-full object-cover transition-opacity duration-300"
-                />
-                
-                {/* Subtle switch button */}
-                <div className="absolute bottom-3 right-3">
+              {/* Photo Mode Switcher & Change Photo button */}
+              <div className="flex flex-wrap items-center justify-between gap-2 pb-1">
+                <div className="inline-flex p-1 rounded-xl bg-zinc-900 border border-white/10 text-xs">
                   <button
-                    onClick={() => setShowShopfloor(!showShopfloor)}
-                    className="px-3 py-1.5 rounded-full bg-black/70 hover:bg-black text-white text-xs backdrop-blur-md border border-white/20 transition-all cursor-pointer"
+                    onClick={() => setShowShopfloor(false)}
+                    className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer font-medium ${
+                      !showShopfloor
+                        ? 'bg-white text-black shadow-sm'
+                        : 'text-zinc-400 hover:text-white'
+                    }`}
                   >
-                    {showShopfloor ? 'View Natural Photo' : 'View Shopfloor Photo'}
+                    Natural Field Photo
+                  </button>
+                  <button
+                    onClick={() => setShowShopfloor(true)}
+                    className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer font-medium ${
+                      showShopfloor
+                        ? 'bg-white text-black shadow-sm'
+                        : 'text-zinc-400 hover:text-white'
+                    }`}
+                  >
+                    Northern HeatEx Shopfloor
                   </button>
                 </div>
+
+                {isOwner && (
+                  <button
+                    onClick={() => openEditor(currentImageKey, currentImageLabel)}
+                    className="px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-xs text-zinc-200 hover:text-white flex items-center space-x-1.5 transition-colors cursor-pointer"
+                    title="Owner Action: Click to replace this photo with your own"
+                  >
+                    <Camera className="w-3.5 h-3.5 text-cyan-400" />
+                    <span>Change Photo</span>
+                  </button>
+                )}
+              </div>
+
+              {/* Main Photo Box */}
+              <div className="relative rounded-2xl overflow-hidden aspect-video sm:aspect-[16/10] bg-zinc-900 border border-white/10">
+                <EditableImage
+                  imageKey={currentImageKey}
+                  label={currentImageLabel}
+                  fallbackUrl={showShopfloor ? selectedItem.brochurePhoto : selectedItem.naturalPhoto}
+                  alt={selectedItem.name}
+                  containerClassName="w-full h-full"
+                  className="w-full h-full object-cover transition-opacity duration-300"
+                />
               </div>
 
               <div className="text-xs text-zinc-500 flex items-center justify-between px-1">
-                <span>{showShopfloor ? 'Haridwar Shopfloor Archive' : 'Field Installation View'}</span>
+                <span>{showShopfloor ? 'Northern HeatEx Advanced Shopfloor Archive' : 'Field Installation View'}</span>
                 <button onClick={openBrochure} className="hover:text-zinc-300 underline cursor-pointer">
                   See in 12-Page Brochure
                 </button>

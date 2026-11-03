@@ -29,15 +29,17 @@ if (apiKey && !apiKey.startsWith("MY_") && apiKey !== "placeholder") {
 }
 
 const SYSTEM_INSTRUCTION = `
-You are the Chief AI Thermal & Rotating Equipment Consultant for Northern HeatEx Corporation (formerly founded in 1983 as Noor Engineering Works, based in Haridwar, Uttarakhand, India).
+You are the Chief AI Thermal & Rotating Equipment Consultant for Northern HeatEx Corporation (Haridwar, Uttarakhand, India).
 Tone: NASA-grade aerospace engineering precision, ultra-luxurious, authoritative, technical, polite, and rapid.
 
-Company Key Facts:
-- Company Name: Northern HeatEx Corporation (Legacy: Noor Engineering Works since 1983 - over 40+ years legacy).
+Corporate Structure & Facts:
+- Company Name: Northern HeatEx Corporation.
+- Corporate Structure: Northern HeatEx Corporation has been established as the new-generation corporation to spearhead nationwide expansion, EPC contracts, and international turnkey projects.
+- Parent Company & Veteran Unit: Noor Engineering Works is our esteemed parent company and older manufacturing unit, working purely in Public Sector Undertakings (PSUs) and state electricity undertakings across India.
 - Location: Shastri Nagar, Jwalapur, Haridwar, Uttarakhand - 249407, India.
-- Contacts: Phone & Mobile: +91-9760362826, +91-9557565742, +91-8532823883.
+- Contacts: Phone & Mobile: +91-8532823883, +91-9760362826, +91-9557565742.
 - Emails: info@northernheatex.co.in, northernheatex@outlook.in.
-- Facilities: 15,000 sq. ft. modern facility in Haridwar, CNC turning centers up to 2500mm diameter, precision boring, milling, shell rolling up to 25mm thickness, ASME Sec. IX certified welders (GTAW, SMAW, SAW), CMM dimensional verification, Hydrostatic test bench up to 100 bar, NDT facilities (DPT, MPI, UT, PMI).
+- Facilities: 15,000 sq. ft. modern precision manufacturing facility in Haridwar, CNC turning centers up to 2500mm diameter, precision boring, milling, shell rolling up to 25mm thickness, ASME Sec. IX certified welders (GTAW, SMAW, SAW), CMM dimensional verification, Hydrostatic test bench up to 100 bar, NDT facilities (DPT, MPI, UT, PMI).
 - Key Offerings:
   1. Heat Exchangers: Shell & Tube (fixed tubesheet, U-tube, floating head), Stator Air Coolers / Generator Coolers, Surface Condensers, Bearing & Oil Coolers, Tube Bundles, Intercoolers, Aftercoolers.
   2. Precision Retubing & Refurbishment: 10-step refurbishment methodology, tube replacement in copper alloys (Admiralty, Cu-Ni 70/30, 90/10), Stainless Steel (304/316L/321), Titanium Grade 2, Duplex & Super Duplex, Inconel, Monel, Hastelloy. Restores 10-15 years operating life with 40-60% savings vs new equipment.
@@ -46,18 +48,23 @@ Company Key Facts:
 - Standards & Certifications: ASME Sec. VIII Div. 1, TEMA (Class R, C, B), ASTM, ISO 9001, ASME B31.1 & B31.3. Complete test certificates, mill test reports, hydro test at 1.5x design pressure, helium leak testing.
 - Prestigious Clients: NHPC Ltd., UJVN Ltd., BBMB (Bhakra Beas Management Board), NPCIL Ltd. (Nuclear Power Corporation of India), HPSEB Ltd., RJVNL, JKSPDC Ltd., Damodar Valley Corporation (DVC), TGGENCO, Kerala State Electricity Board (KSEB).
 
-Format formulas, standards, engineering advice with clean markdown. When advising on RFQ or inquiries, mention that drawings and specifications can be submitted directly via the inquiry portal or WhatsApp at +91-9760362826. Keep answers concise, highly technical, and aerospace-grade precise.
+Format formulas, standards, engineering advice with clean markdown. When advising on RFQ or inquiries, mention that drawings and specifications can be submitted directly via the inquiry portal or WhatsApp/Call at +91-8532823883. Keep answers concise, highly technical, and aerospace-grade precise.
 `;
 
 function getDomainKnowledgeReply(prompt: string): string {
   const lower = prompt.toLowerCase();
-  if (lower.includes("stator") || lower.includes("air cooler")) {
+  if (lower.includes("parent") || lower.includes("noor") || lower.includes("structure")) {
+    return `**Corporate Heritage & Structure — Northern HeatEx Corporation**\n\n` +
+      `• **Parent Company & Veteran Unit:** **Noor Engineering Works** is our esteemed parent manufacturing organization, dedicated purely to serving Public Sector Undertakings (PSUs) and state electricity undertakings across India.\n` +
+      `• **New Generation Corporation:** **Northern HeatEx Corporation** is formed to spearhead nationwide expansion, EPC partnerships, and international turnkey projects for the modern era.\n` +
+      `• **Central Facilities:** Both entities benefit from our centralized 15,000 sq. ft. precision machining and fabrication facilities in Haridwar, Uttarakhand.`;
+  } else if (lower.includes("stator") || lower.includes("air cooler")) {
     return `**Stator Air Coolers (Generator Coolers) — Technical Overview**\n\n` +
       `• **Application:** Hydro and Turbo generator cooling systems for continuous heat dissipation.\n` +
       `• **Tube Metallurgy:** High-integrity Cupro-Nickel (90/10 or 70/30), Stainless Steel 304/316L, or Admiralty Brass with spirally wound aluminum or copper fins.\n` +
       `• **Design Codes:** ASME Sec. VIII Div. 1 & TEMA standards.\n` +
       `• **Pressure Rating:** Tested hydrostatically up to 1.5x design pressure with zero leakage tolerance.\n` +
-      `• **Northern HeatEx Advantage:** Direct replacement for BHEL, Alstom, Voith, and Andritz generator designs with 100% dimensional equivalence. Contact our Haridwar engineering cell at +91-9760362826 for technical sizing.`;
+      `• **Northern HeatEx Advantage:** Direct replacement for BHEL, Alstom, Voith, and Andritz generator designs with 100% dimensional equivalence. Contact our Haridwar engineering cell at +91-8532823883 for technical sizing.`;
   } else if (lower.includes("shell and tube") || lower.includes("heat exchanger") || lower.includes("condenser")) {
     return `**Shell & Tube Heat Exchangers — Precision Specifications**\n\n` +
       `• **Configurations:** Fixed Tube Sheet (TEMA BEM, AEM), U-Tube (BEU, CFU), and Floating Head (AES, AET) for thermal expansion relief.\n` +
@@ -78,21 +85,21 @@ function getDomainKnowledgeReply(prompt: string): string {
       `• **Tube Materials:** Titanium Gr 2, Cupro-Nickel 90/10, Stainless Steel 316L, Brass, and Duplex.`;
   } else if (lower.includes("client") || lower.includes("customer") || lower.includes("experience") || lower.includes("nhpc") || lower.includes("npcil")) {
     return `**Institutional Credentials & Utility Track Record**\n\n` +
-      `Since 1983 (founded as Noor Engineering Works), Northern HeatEx Corporation has been a trusted supplier to premier state and federal power entities:\n` +
+      `Northern HeatEx Corporation, together with its veteran parent manufacturing unit Noor Engineering Works, has supported premier state and central power entities across India:\n` +
       `• **NHPC Ltd.** (National Hydroelectric Power Corporation)\n` +
       `• **NPCIL Ltd.** (Nuclear Power Corporation of India)\n` +
       `• **BBMB** (Bhakra Beas Management Board)\n` +
       `• **UJVN Ltd.** (Uttarakhand Jal Vidyut Nigam)\n` +
       `• **HPSEB, RJVNL, JKSPDC, DVC, TGGENCO, KSEB**\n\n` +
-      `All components meet ASME, TEMA, and nuclear-grade quality documentation standards.`;
+      `All equipment meets ASME, TEMA, and nuclear-grade quality documentation standards.`;
   } else {
     return `**Northern HeatEx Corporation — Mission Engineering Desk**\n\n` +
-      `Welcome to Northern HeatEx Corporation (Noor Engineering Works since 1983, Haridwar, India). I can assist with:\n` +
+      `Welcome to Northern HeatEx Corporation (Haridwar, India). I can assist with:\n` +
       `1. **Heat Exchanger Sizing & Metallurgy Selection** (Shell & Tube, Stator Air Coolers, Surface Condensers)\n` +
       `2. **Retubing & Refurbishment Sizing** (Cu-Ni, Titanium Gr 2, SS 316L, 10-step protocol)\n` +
       `3. **White Metal Bearing Re-Babbitting** (ASTM B23 Gr 2 tin-base, centrifugal casting, ultrasonic bond checks)\n` +
       `4. **ASME Sec. VIII & TEMA Standard Queries**\n` +
-      `5. **RFQ / Sizing Assistance**\n\n` +
+      `5. **RFQ / Technical Sizing Assistance**\n\n` +
       `Please state your technical query, operating fluid temperatures, or design pressures.`;
   }
 }

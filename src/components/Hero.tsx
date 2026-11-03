@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowRight, Bot, PhoneCall, ShieldCheck } from 'lucide-react';
 import { COMPANY_PROFILE } from '../data/companyData';
+import { EditableImage } from './EditableImage';
 
 interface HeroProps {
   openInquiry: () => void;
@@ -40,7 +41,7 @@ export const Hero: React.FC<HeroProps> = ({
 
         {/* Calm, readable sub-headline */}
         <p className="mt-6 text-base sm:text-xl text-zinc-400 font-normal leading-relaxed max-w-2xl mx-auto">
-          Custom Shell & Tube Heat Exchangers, Stator Air Coolers, and White Metal Bearing Re-Babbitting. Trusted by India’s national power utilities and critical industries since 1983.
+          Custom Shell & Tube Heat Exchangers, Stator Air Coolers, and White Metal Bearing Re-Babbitting. Trusted by India’s national power utilities, critical industries, and international turnkey projects.
         </p>
 
         {/* Clean Apple Action Buttons */}
@@ -72,8 +73,8 @@ export const Hero: React.FC<HeroProps> = ({
         {/* Direct emergency phone line */}
         <div className="mt-4 text-xs text-zinc-500 flex items-center justify-center space-x-2">
           <span>24/7 Outage Response:</span>
-          <a href="tel:+919760362826" className="text-zinc-400 hover:text-white font-medium underline">
-            +91-9760362826
+          <a href="tel:+918532823883" className="text-zinc-400 hover:text-white font-medium underline">
+            +91-8532823883
           </a>
           <span>•</span>
           <button onClick={openBrochure} className="text-zinc-400 hover:text-white underline cursor-pointer">
@@ -83,24 +84,26 @@ export const Hero: React.FC<HeroProps> = ({
 
         {/* Cinematic Main Feature Image */}
         <div className="mt-14 relative rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-zinc-950">
-          <img
-            src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1600&q=85"
+          <EditableImage
+            imageKey="hero_image"
+            label="Hero Cinematic Banner"
+            fallbackUrl="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1600&q=85"
             alt="Precision Industrial Heat Exchanger"
             className="w-full h-72 sm:h-96 lg:h-[460px] object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 pointer-events-none"></div>
           
           <div className="absolute bottom-6 left-6 right-6 flex flex-col sm:flex-row sm:items-center justify-between text-left gap-2 text-white">
             <div>
               <div className="text-xs text-zinc-400 font-medium uppercase tracking-wider">
-                Haridwar Facility • Certified Standards
+                Haridwar Precision Facility • Quality Certified
               </div>
               <div className="text-sm sm:text-base font-semibold text-zinc-100">
                 ASME Section VIII Div. 1 • TEMA Class R, C, B • ISO 9001:2015
               </div>
             </div>
             <div className="text-xs text-zinc-400 font-mono sm:text-right">
-              Noor Engineering Works Legacy Since 1983
+              Precision Thermal & Rotating Systems
             </div>
           </div>
         </div>
@@ -109,12 +112,12 @@ export const Hero: React.FC<HeroProps> = ({
         <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 text-left border-t border-white/10 pt-10">
           <div>
             <div className="text-2xl sm:text-3xl font-semibold tracking-tight text-white">40+ Years</div>
-            <div className="text-xs text-zinc-400 mt-1">Specialized legacy in rotating equipment and heat exchangers since 1983.</div>
+            <div className="text-xs text-zinc-400 mt-1">Specialized engineering legacy in rotating equipment and thermal systems.</div>
           </div>
 
           <div>
             <div className="text-2xl sm:text-3xl font-semibold tracking-tight text-white">15,000 sq ft</div>
-            <div className="text-xs text-zinc-400 mt-1">State-of-the-art facility in Haridwar with 15-ton overhead cranes.</div>
+            <div className="text-xs text-zinc-400 mt-1">Noor Engineering Works manufacturing unit in Haridwar with 15-ton overhead cranes.</div>
           </div>
 
           <div>
@@ -125,6 +128,47 @@ export const Hero: React.FC<HeroProps> = ({
           <div>
             <div className="text-2xl sm:text-3xl font-semibold tracking-tight text-white">100 Bar</div>
             <div className="text-xs text-zinc-400 mt-1">Hydrostatic proof test bench and mass spectrometer helium testing.</div>
+          </div>
+        </div>
+
+        {/* Corporate Heritage & Multi-Tier Structure */}
+        <div className="mt-14 text-left apple-card rounded-3xl p-6 sm:p-8 border border-white/10 relative overflow-hidden">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-white/10 gap-2">
+            <div>
+              <div className="text-xs uppercase tracking-widest text-zinc-400 font-medium">
+                Corporate Structure & Capabilities
+              </div>
+              <h3 className="text-xl sm:text-2xl font-bold text-white mt-1">
+                Parent Unit Foundation & New Generation Reach
+              </h3>
+            </div>
+            <span className="self-start sm:self-auto px-3 py-1 rounded-full text-xs font-medium bg-cyan-500/10 text-cyan-300 border border-cyan-500/25">
+              Nationwide & Global Turnkey Projects
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            <div className="bg-zinc-950/60 rounded-2xl p-5 border border-white/5 space-y-2">
+              <div className="flex items-center space-x-2">
+                <span className="w-2 h-2 rounded-full bg-amber-400"></span>
+                <span className="text-sm font-semibold text-white">Noor Engineering Works</span>
+                <span className="text-[10px] text-zinc-400 font-mono bg-white/5 px-2 py-0.5 rounded">Parent Company</span>
+              </div>
+              <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+                Our veteran parent company and trusted manufacturing unit. Noor Engineering Works operates purely in Public Sector Undertakings (PSUs) and state electricity boards across India, executing critical thermal and hydro equipment contracts with decades of dedicated service.
+              </p>
+            </div>
+
+            <div className="bg-zinc-950/60 rounded-2xl p-5 border border-white/5 space-y-2">
+              <div className="flex items-center space-x-2">
+                <span className="w-2 h-2 rounded-full bg-cyan-400"></span>
+                <span className="text-sm font-semibold text-white">Northern HeatEx Corporation</span>
+                <span className="text-[10px] text-zinc-400 font-mono bg-cyan-950/80 text-cyan-300 px-2 py-0.5 rounded">New Generation</span>
+              </div>
+              <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+                Formed as our new-generation enterprise to spearhead nationwide expansion, EPC partnerships, and international turnkey projects. Equipped with upgraded CNC precision facilities and ASME/TEMA documentation to deliver world-class thermal and rotating equipment.
+              </p>
+            </div>
           </div>
         </div>
 

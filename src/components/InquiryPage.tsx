@@ -51,7 +51,7 @@ export const InquiryPage: React.FC<InquiryPageProps> = ({
       `Phone: ${formData.phone}\n` +
       `Email: ${formData.email}\n` +
       `Notes: ${formData.additionalDetails || 'None'}`;
-    return `https://wa.me/919760362826?text=${encodeURIComponent(text)}`;
+    return `https://wa.me/918532823883?text=${encodeURIComponent(text)}`;
   };
 
   return (
@@ -97,7 +97,7 @@ export const InquiryPage: React.FC<InquiryPageProps> = ({
                   rel="noopener noreferrer"
                   className="px-6 py-3 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-medium transition-colors"
                 >
-                  Forward via WhatsApp (+91-9760362826)
+                  Forward via WhatsApp (+91-8532823883)
                 </a>
 
                 <button
@@ -254,7 +254,7 @@ export const InquiryPage: React.FC<InquiryPageProps> = ({
                 </button>
 
                 <div className="text-xs text-zinc-400 text-center sm:text-right">
-                  Or call directly: <a href="tel:+919760362826" className="text-white underline font-medium">+91-9760362826</a>
+                  Or call directly: <a href="tel:+918532823883" className="text-white underline font-medium">+91-8532823883</a>
                 </div>
               </div>
 
@@ -265,9 +265,9 @@ export const InquiryPage: React.FC<InquiryPageProps> = ({
 
         {/* Corporate Works Info Box */}
         <div className="mt-12 text-center text-xs text-zinc-400 space-y-1">
-          <div>Northern HeatEx Corporation (Noor Engineering Works since 1983)</div>
+          <div className="text-zinc-200 font-medium">Northern HeatEx Corporation</div>
           <div>Shastri Nagar, Jwalapur, Haridwar, Uttarakhand - 249407, India</div>
-          <div>Email: info@northernheatex.co.in • 24/7 Support Available</div>
+          <div>Direct: +91-8532823883 • Email: info@northernheatex.co.in • 24/7 Outage Support</div>
         </div>
 
       </div>

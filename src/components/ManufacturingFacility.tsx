@@ -18,13 +18,13 @@ export const ManufacturingFacility: React.FC<ManufacturingFacilityProps> = ({
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="text-xs uppercase tracking-widest text-zinc-400 font-medium mb-2">
-            Haridwar Facility
+            Northern HeatEx Corporation
           </div>
           <h2 className="text-3xl sm:text-5xl font-bold tracking-tight text-white">
             Manufacturing & Quality Assurance.
           </h2>
           <p className="mt-4 text-base sm:text-lg text-zinc-400 font-normal leading-relaxed">
-            Our 15,000 sq. ft. modern works in Haridwar pairs heavy precision CNC turning up to 2,500 mm diameter with ASME Section IX welding and Level II NDT inspection.
+            Our 15,000 sq. ft. modern precision manufacturing facility in Haridwar pairs heavy precision CNC turning up to 2,500 mm diameter with ASME Section IX welding and Level II NDT inspection.
           </p>
         </div>
 
@@ -78,7 +78,7 @@ export const ManufacturingFacility: React.FC<ManufacturingFacilityProps> = ({
                 onClick={openInquiry}
                 className="px-6 py-3 rounded-full bg-white text-black text-sm font-medium hover:bg-zinc-200 transition-all cursor-pointer"
               >
-                Schedule Factory Visit
+                Request Documentation Dossier
               </button>
               <button
                 onClick={openBrochure}

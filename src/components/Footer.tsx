@@ -1,5 +1,7 @@
 import React from 'react';
 import { COMPANY_PROFILE } from '../data/companyData';
+import { useSiteImages } from '../context/ImageContext';
+import { Lock, Unlock, FileDown, ShieldCheck } from 'lucide-react';
 
 interface FooterProps {
   scrollToSection: (id: string) => void;
@@ -14,14 +16,18 @@ export const Footer: React.FC<FooterProps> = ({
   openBrochure,
   openInquiry,
 }) => {
+  const { isOwner, lockOwner, setOwnerModalOpen } = useSiteImages();
   return (
     <footer className="bg-black border-t border-white/10 text-zinc-400 text-xs py-16">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Top Disclaimer / Heritage Note */}
-        <div className="border-b border-white/10 pb-8 mb-10 text-zinc-400 leading-relaxed max-w-4xl">
+        {/* Top Heritage & Corporate Structure Note */}
+        <div className="border-b border-white/10 pb-8 mb-10 text-zinc-400 leading-relaxed max-w-4xl space-y-2">
           <p>
-            Northern HeatEx Corporation (formerly Noor Engineering Works, established 1983). Over four decades of precision thermal transfer engineering, hydro turbine rotating components, stator air coolers, and white metal bearing re-babbitting for premier public sector utilities, nuclear plants, and international EPC contractors.
+            <strong className="text-zinc-200">Northern HeatEx Corporation</strong> has been formed as the new-generation corporation to spearhead nationwide expansion and international turnkey projects in precision thermal transfer and rotating equipment.
+          </p>
+          <p className="text-zinc-500 text-[11px]">
+            Our parent company and veteran manufacturing unit, <strong className="text-zinc-300">Noor Engineering Works</strong>, operates purely in Public Sector Undertakings (PSUs) and state electricity undertakings across India, continuing its specialized fabrication legacy at our Haridwar facilities.
           </p>
         </div>
 
@@ -84,8 +90,15 @@ export const Footer: React.FC<FooterProps> = ({
             <div className="text-white font-semibold text-xs uppercase tracking-wider">Resources</div>
             <ul className="space-y-2 text-zinc-400">
               <li>
-                <button onClick={openBrochure} className="hover:text-white transition-colors">
-                  12-Page Official Brochure
+                <button onClick={openBrochure} className="hover:text-white transition-colors flex items-center space-x-1.5 text-cyan-400">
+                  <FileDown className="w-3.5 h-3.5" />
+                  <span>Download Official Brochure</span>
+                </button>
+              </li>
+              <li>
+                <button onClick={() => scrollToSection('iso-certifications')} className="hover:text-white transition-colors flex items-center space-x-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-zinc-500" />
+                  <span>ISO Accreditations & Certificates</span>
                 </button>
               </li>
               <li>
@@ -107,14 +120,14 @@ export const Footer: React.FC<FooterProps> = ({
           </div>
 
           <div className="space-y-3">
-            <div className="text-white font-semibold text-xs uppercase tracking-wider">Haridwar Works</div>
+            <div className="text-white font-semibold text-xs uppercase tracking-wider">Northern HeatEx Corporation</div>
             <div className="space-y-1.5 text-zinc-400">
               <div>Shastri Nagar, Jwalapur, Haridwar, Uttarakhand - 249407, India</div>
               <div>
-                <a href="tel:+919760362826" className="text-zinc-300 hover:text-white font-medium block">
-                  +91-9760362826
+                <a href="tel:+918532823883" className="text-zinc-300 hover:text-white font-medium block">
+                  +91-8532823883
                 </a>
-                <span className="text-zinc-400">+91-9557565742 / +91-8532823883</span>
+                <span className="text-zinc-400">+91-9760362826 / +91-9557565742</span>
               </div>
               <div>
                 <a href="mailto:info@northernheatex.co.in" className="hover:text-white block">
@@ -127,14 +140,34 @@ export const Footer: React.FC<FooterProps> = ({
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between text-zinc-400 gap-2">
+        <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between text-zinc-500 gap-3">
           <div>
             Copyright © {new Date().getFullYear()} Northern HeatEx Corporation. All rights reserved.
           </div>
-          <div className="flex items-center space-x-4 text-zinc-400">
-            <span>Haridwar, Uttarakhand</span>
+          <div className="flex items-center space-x-4">
+            <span>Haridwar Precision Works, Uttarakhand</span>
             <span>•</span>
-            <span>ASME & TEMA Certified</span>
+            <span>ISO 9001:2015 Accredited</span>
+            <span>•</span>
+            {isOwner ? (
+              <button
+                onClick={lockOwner}
+                className="flex items-center space-x-1.5 text-cyan-400 hover:text-cyan-300 transition-colors cursor-pointer px-2 py-1 rounded bg-cyan-950/40 border border-cyan-800/40"
+                title="Owner Mode is active. Click to lock site."
+              >
+                <Unlock className="w-3.5 h-3.5" />
+                <span className="font-mono text-[11px]">Owner Mode (Lock)</span>
+              </button>
+            ) : (
+              <button
+                onClick={() => setOwnerModalOpen(true)}
+                className="flex items-center space-x-1 text-zinc-600 hover:text-zinc-400 transition-colors cursor-pointer"
+                title="Authorized Owner Login"
+              >
+                <Lock className="w-3.5 h-3.5" />
+                <span className="text-[11px]">Owner Portal</span>
+              </button>
+            )}
           </div>
         </div>
 

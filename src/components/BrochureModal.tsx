@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, ExternalLink, Download, FileText } from 'lucide-react';
 import { BROCHURE_PAGES } from '../data/companyData';
 
 interface BrochureModalProps {
@@ -27,6 +27,15 @@ export const BrochureModal: React.FC<BrochureModalProps> = ({
     setCurrentPage(prev => (prev < BROCHURE_PAGES.length ? prev + 1 : 1));
   };
 
+  const handleDownloadPage = () => {
+    const link = document.createElement('a');
+    link.href = activePageData.image;
+    link.download = `Northern_HeatEx_Brochure_Page_${activePageData.page}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/85 backdrop-blur-2xl">
       <div className="relative bg-[#0F0F13] border border-white/10 rounded-3xl w-full max-w-5xl h-[90vh] flex flex-col shadow-2xl overflow-hidden">
@@ -35,7 +44,7 @@ export const BrochureModal: React.FC<BrochureModalProps> = ({
         <div className="p-4 px-6 border-b border-white/10 flex items-center justify-between bg-zinc-950/70">
           <div>
             <div className="text-[11px] text-zinc-400 font-medium">
-              Official Brochure • Page {activePageData.page} of {BROCHURE_PAGES.length}
+              Official 12-Page Engineering Brochure • Page {activePageData.page} of {BROCHURE_PAGES.length}
             </div>
             <h3 className="text-sm sm:text-base font-semibold text-white mt-0.5">
               {activePageData.title}
@@ -43,6 +52,14 @@ export const BrochureModal: React.FC<BrochureModalProps> = ({
           </div>
 
           <div className="flex items-center space-x-2">
+            <button
+              onClick={handleDownloadPage}
+              className="px-3.5 py-1.5 rounded-full bg-white text-black text-xs font-semibold hover:bg-zinc-200 transition-colors flex items-center space-x-1.5 shadow cursor-pointer"
+              title="Download this brochure page"
+            >
+              <Download className="w-3.5 h-3.5 text-black" />
+              <span>Download Page</span>
+            </button>
             <a
               href={activePageData.image}
               target="_blank"
@@ -54,7 +71,7 @@ export const BrochureModal: React.FC<BrochureModalProps> = ({
             </a>
             <button
               onClick={onClose}
-              className="p-2 rounded-full text-zinc-400 hover:text-white hover:bg-white/5 transition-colors"
+              className="p-2 rounded-full text-zinc-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
