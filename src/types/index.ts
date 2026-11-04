@@ -46,7 +46,12 @@ export interface InquiryFormData {
   tubeFluid: string;
   operatingPressureBar: string;
   operatingTempC: string;
-  tubeBundleLengthMeters: string;
+  tubeLength: string;
+  totalExchangerLength: string;
+  shellDiaType: 'ID' | 'OD';
+  shellDiameter: string;
+  tubeDiameter: string;
+  otherDimensions: string;
   urgency: 'standard' | 'priority' | 'emergency-outage';
   clientName: string;
   companyName: string;
@@ -55,6 +60,9 @@ export interface InquiryFormData {
   country: string;
   additionalDetails: string;
   estimatedQuantity: string;
+  drawingFileName?: string;
+  drawingFileSize?: string;
+  drawingFileData?: string;
 }
 
 export interface ChatMessage {

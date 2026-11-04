@@ -6,6 +6,7 @@ export const COMPANY_PROFILE = {
   parentCompanyRole: "Parent Company & Veteran Unit dedicated to PSUs and State Undertakings",
   newGenerationRole: "New Generation Enterprise for Nationwide & International Projects",
   tagline: "Engineering Reliability Through Precision Manufacturing & Thermal Excellence",
+  gstNumber: "05AABFN3036G1ZQ",
   address: "Shastri Nagar, Jwalapur, Haridwar, Uttarakhand - 249407, India",
   phoneNumbers: ["+91-8532823883", "+91-9760362826", "+91-9557565742"],
   primaryPhone: "+918532823883",

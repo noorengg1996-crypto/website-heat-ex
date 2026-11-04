@@ -92,14 +92,33 @@ function getDomainKnowledgeReply(prompt: string): string {
       `• **UJVN Ltd.** (Uttarakhand Jal Vidyut Nigam)\n` +
       `• **HPSEB, RJVNL, JKSPDC, DVC, TGGENCO, KSEB**\n\n` +
       `All equipment meets ASME, TEMA, and nuclear-grade quality documentation standards.`;
+  } else if (lower.includes("gst") || lower.includes("tax") || lower.includes("registration") || lower.includes("gstin")) {
+    return `**GST Registration & Corporate Tax Details — Northern HeatEx Corporation**\n\n` +
+      `• **GSTIN:** **05AABFN3036G1ZQ** (State Jurisdiction: Uttarakhand, State Code: 05)\n` +
+      `• **Legal Entity:** Northern HeatEx Corporation\n` +
+      `• **Registered Works Address:** Shastri Nagar, Jwalapur, Haridwar, Uttarakhand - 249407, India\n` +
+      `• **Invoice Compliance:** Fully compliant for Central GST (CGST), State GST (SGST), Integrated GST (IGST), and PSU e-invoicing portals.`;
+  } else if (lower.includes("dimension") || lower.includes("diameter") || lower.includes("id") || lower.includes("od") || lower.includes("length") || lower.includes("tube length")) {
+    return `**Heat Exchanger Dimensional & Sizing Guide**\n\n` +
+      `• **Length of Tube:** Configured from 1,000 mm up to 12,000 mm (12.0 meters) straight and U-tube lengths.\n` +
+      `• **Total Exchanger Length:** Sized to match available plant layout, typically tube length + 600 mm to 1,500 mm for channel heads and rear bonnets.\n` +
+      `• **Shell Diameter (Dia):** Available from 200 mm to 2,500 mm (8 inches to 98 inches) in ID (Inner Diameter) or OD (Outer Diameter).\n` +
+      `• **Tube Diameter & Gauge:** Standard sizes include 19.05 mm (3/4") and 25.4 mm (1") OD with 16 BWG (1.65 mm), 18 BWG (1.24 mm), or custom wall thicknesses in Cu-Ni, SS 316L, or Titanium.\n` +
+      `• **Custom Sizing & Drawings:** You can enter your specific dimensions and attach your PDF/CAD drawing directly in our Inquiry section!`;
+  } else if (lower.includes("drawing") || lower.includes("upload") || lower.includes("file") || lower.includes("cad")) {
+    return `**Engineering Drawing & File Submission**\n\n` +
+      `• **Supported Formats:** PDF, DWG, DXF, STEP, STP, and high-resolution images.\n` +
+      `• **Where to Upload:** Navigate to the **Inquiry** section ("Let's discuss your project") on this website to upload your vessel layout, tubesheet drilling pattern, or OEM data sheet directly.\n` +
+      `• **WhatsApp Direct Dispatch:** You can also transmit drawings directly via WhatsApp to our technical engineering cell at **+91-8532823883**.`;
   } else {
     return `**Northern HeatEx Corporation — Mission Engineering Desk**\n\n` +
       `Welcome to Northern HeatEx Corporation (Haridwar, India). I can assist with:\n` +
-      `1. **Heat Exchanger Sizing & Metallurgy Selection** (Shell & Tube, Stator Air Coolers, Surface Condensers)\n` +
-      `2. **Retubing & Refurbishment Sizing** (Cu-Ni, Titanium Gr 2, SS 316L, 10-step protocol)\n` +
-      `3. **White Metal Bearing Re-Babbitting** (ASTM B23 Gr 2 tin-base, centrifugal casting, ultrasonic bond checks)\n` +
-      `4. **ASME Sec. VIII & TEMA Standard Queries**\n` +
-      `5. **RFQ / Technical Sizing Assistance**\n\n` +
+      `1. **Heat Exchanger Sizing & Metallurgy** (Shell & Tube, Stator Air Coolers, Surface Condensers)\n` +
+      `2. **Dimensional Configuration** (Tube length, Shell ID/OD, tube gauge)\n` +
+      `3. **10-Step Retubing & Refurbishment** (Cu-Ni, Titanium Gr 2, SS 316L, 40-60% savings)\n` +
+      `4. **White Metal Bearing Re-Babbitting** (ASTM B23 Gr 2 tin-base, centrifugal casting)\n` +
+      `5. **GST Verification:** GSTIN **05AABFN3036G1ZQ**\n` +
+      `6. **Drawing & RFQ Proposals:** Submit drawings via the Inquiry section or call **+91-8532823883**.\n\n` +
       `Please state your technical query, operating fluid temperatures, or design pressures.`;
   }
 }
@@ -109,28 +128,52 @@ app.post("/api/ai/chat", async (req, res) => {
   const { messages, query } = req.body;
   const prompt = query || (messages && messages[messages.length - 1]?.content) || "Hello";
 
-  if (ai) {
+  // Check for dynamic API key injection at runtime
+  const currentKey = process.env.GEMINI_API_KEY || process.env.API_KEY;
+  let activeAi = ai;
+  if (!activeAi && currentKey && !currentKey.startsWith("MY_") && currentKey !== "placeholder") {
     try {
-      const response = await ai.models.generateContent({
-        model: "gemini-3.8-flash",
+      activeAi = new GoogleGenAI({
+        apiKey: currentKey,
+        httpOptions: {
+          headers: {
+            "User-Agent": "aistudio-build",
+          },
+        },
+      });
+    } catch (e) {
+      console.warn("Could not instantiate GoogleGenAI with key:", e);
+    }
+  }
+
+  if (activeAi) {
+    try {
+      // 5-second timeout promise to guarantee hyper-fast responsiveness
+      const timeoutPromise = new Promise<null>((_, reject) =>
+        setTimeout(() => reject(new Error("Gemini API call timed out after 5s")), 5000)
+      );
+
+      const geminiPromise = activeAi.models.generateContent({
+        model: "gemini-2.5-flash",
         contents: prompt,
         config: {
           systemInstruction: SYSTEM_INSTRUCTION,
         },
       });
 
-      const reply = response.text;
+      const response: any = await Promise.race([geminiPromise, timeoutPromise]);
+      const reply = response?.text;
       if (reply && reply.trim()) {
-        return res.json({ reply });
+        return res.json({ reply, model: "gemini-2.5-flash" });
       }
     } catch (err: any) {
-      console.warn("Gemini API call returned error, falling back to local domain intelligence:", err?.message || err);
+      console.warn("Gemini API call fallback to instant aerospace engineering knowledge:", err?.message || err);
     }
   }
 
-  // Graceful domain knowledge fallback
+  // Instant aerospace engineering domain intelligence fallback
   const fallbackReply = getDomainKnowledgeReply(prompt);
-  return res.json({ reply: fallbackReply });
+  return res.json({ reply: fallbackReply, model: "northern-heatex-intelligence" });
 });
 
 // Setup Vite middleware in dev or static files in production

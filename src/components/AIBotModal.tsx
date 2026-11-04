@@ -17,7 +17,7 @@ export const AIBotModal: React.FC<AIBotModalProps> = ({
     {
       id: 'welcome',
       sender: 'bot',
-      content: `Hello. I am the Northern HeatEx Engineering Assistant.\n\nYou can ask me about:\n• Tube metallurgy recommendations (Titanium, Cupro-Nickel, SS 316L, Duplex)\n• Stator air cooler vs. shell & tube heat exchanger specifications\n• The 10-step retubing process and cost savings\n• White metal bearing re-babbitting clearances (ASTM B23)\n• Our Haridwar facility capabilities`,
+      content: `Hello! I am the Northern HeatEx Technical Intelligence Assistant.\n\nI can assist you with:\n• Tube metallurgy recommendations (Titanium, Cupro-Nickel, SS 316L, Duplex)\n• Shell & tube dimensions (tube length, exchanger length, ID/OD, BWG gauge)\n• Submitting engineering drawings / CAD files for quotation\n• 10-step retubing process with 40–60% cost savings\n• Bearing re-babbitting (ASTM B23 Grade 2 white metal)\n• Official GSTIN & billing verification: 05AABFN3036G1ZQ\n\nHow can I help with your project today?`,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     },
   ]);
@@ -27,9 +27,11 @@ export const AIBotModal: React.FC<AIBotModalProps> = ({
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const suggestedPrompts = [
-    "Recommend tube metallurgy for cooling water",
-    "Explain the 10-step retubing process",
-    "What are your bearing re-babbitting clearances?",
+    "What is the company GST Number?",
+    "Calculate tube length & shell diameter (ID/OD)",
+    "How to submit engineering drawing / CAD?",
+    "Explain 10-step retubing procedure & savings",
+    "Bearing re-babbitting clearances (ASTM B23)",
   ];
 
   const scrollToBottom = () => {
@@ -59,10 +61,14 @@ export const AIBotModal: React.FC<AIBotModalProps> = ({
     if (!textToSend) setInput('');
     setLoading(true);
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 8000);
+
     try {
       const res = await fetch('/api/ai/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        signal: controller.signal,
         body: JSON.stringify({
           messages: [...messages, userMsg].map(m => ({
             role: m.sender === 'user' ? 'user' : 'assistant',
@@ -71,6 +77,12 @@ export const AIBotModal: React.FC<AIBotModalProps> = ({
           query: query.trim(),
         }),
       });
+
+      clearTimeout(timeoutId);
+
+      if (!res.ok) {
+        throw new Error(`Server returned ${res.status}`);
+      }
 
       const data = await res.json();
       const botReply = data.reply || data.error || "Please contact our engineering team in Haridwar at +91-8532823883 for technical sizing.";
@@ -83,12 +95,27 @@ export const AIBotModal: React.FC<AIBotModalProps> = ({
       };
 
       setMessages(prev => [...prev, botMsg]);
-    } catch (err) {
-      console.error("AI error:", err);
+    } catch (err: any) {
+      clearTimeout(timeoutId);
+      console.warn("AI chat notice:", err?.message || err);
+      
+      // Smart instant fallback response
+      let fallbackText = "Northern HeatEx Engineering Desk: Reach our engineering team directly at +91-8532823883 or info@northernheatex.co.in.";
+      const q = query.toLowerCase();
+      if (q.includes('gst')) {
+        fallbackText = "Northern HeatEx Corporation Registered GST Number is: 05AABFN3036G1ZQ (Registered in Uttarakhand, India). Invoices and purchase orders are processed under this verified GSTIN.";
+      } else if (q.includes('draw') || q.includes('cad') || q.includes('file')) {
+        fallbackText = "You can upload your CAD (.dwg, .dxf), 3D model, or PDF technical drawing directly in our RFQ form below! You can also email files to info@northernheatex.co.in or WhatsApp them to +91-8532823883.";
+      } else if (q.includes('length') || q.includes('dia') || q.includes('dimension') || q.includes('size')) {
+        fallbackText = "For accurate thermal & mechanical sizing, provide:\n• Tube Length (mm or feet)\n• Total Exchanger Length (mm or feet)\n• Shell Diameter (specifying whether Inside Diameter ID or Outside Diameter OD)\n• Tube OD & Wall Gauge (BWG)\nYou can enter all of these directly in our Online Inquiry form!";
+      } else if (q.includes('retub')) {
+        fallbackText = "Our 10-step retubing program provides 40% to 60% cost savings compared to fabricating a new shell, with identical 100% hydro-testing and full material test certificates (MTC 3.1).";
+      }
+
       const fallbackMsg: ChatMessage = {
         id: `bot-${Date.now()}`,
         sender: 'bot',
-        content: "Northern HeatEx Engineering Desk: Reach our engineering team directly at +91-9760362826 or info@northernheatex.co.in.",
+        content: fallbackText,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       };
       setMessages(prev => [...prev, fallbackMsg]);

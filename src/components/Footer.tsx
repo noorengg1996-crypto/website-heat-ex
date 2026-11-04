@@ -124,6 +124,9 @@ export const Footer: React.FC<FooterProps> = ({
             <div className="space-y-1.5 text-zinc-400">
               <div>Shastri Nagar, Jwalapur, Haridwar, Uttarakhand - 249407, India</div>
               <div>
+                <span className="text-zinc-500">GSTIN:</span> <span className="font-mono text-cyan-400 font-medium">05AABFN3036G1ZQ</span>
+              </div>
+              <div>
                 <a href="tel:+918532823883" className="text-zinc-300 hover:text-white font-medium block">
                   +91-8532823883
                 </a>
@@ -144,8 +147,10 @@ export const Footer: React.FC<FooterProps> = ({
           <div>
             Copyright © {new Date().getFullYear()} Northern HeatEx Corporation. All rights reserved.
           </div>
-          <div className="flex items-center space-x-4">
-            <span>Haridwar Precision Works, Uttarakhand</span>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+            <span>Haridwar Precision Works</span>
+            <span>•</span>
+            <span className="font-mono text-zinc-400">GST: 05AABFN3036G1ZQ</span>
             <span>•</span>
             <span>ISO 9001:2015 Accredited</span>
             <span>•</span>

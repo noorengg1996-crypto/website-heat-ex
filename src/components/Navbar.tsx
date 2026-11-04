@@ -71,8 +71,13 @@ export const Navbar: React.FC<NavbarProps> = ({
               )}
 
               <div>
-                <div className="text-sm font-semibold tracking-tight text-white group-hover:text-cyan-400 transition-colors">
-                  Northern HeatEx Corporation
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm font-semibold tracking-tight text-white group-hover:text-cyan-400 transition-colors">
+                    Northern HeatEx Corporation
+                  </span>
+                  <span className="hidden lg:inline text-[9px] font-mono px-1.5 py-0.5 rounded bg-white/10 text-cyan-300 border border-white/10">
+                    GST: 05AABFN3036G1ZQ
+                  </span>
                 </div>
                 <div className="text-[10px] text-zinc-400 font-normal tracking-wide">
                   Precision Thermal & Rotating Equipment
@@ -87,10 +92,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                   e.stopPropagation();
                   openEditor('site_logo', 'Company Brand Logo');
                 }}
-                className="opacity-0 group-hover:opacity-100 p-1.5 rounded-full bg-zinc-800 text-zinc-300 hover:text-white hover:bg-zinc-700 transition-opacity ml-1 cursor-pointer"
-                title="Click to change company logo"
+                className="px-2.5 py-1 rounded-full bg-cyan-950 border border-cyan-500/50 text-cyan-300 hover:text-white hover:bg-cyan-900 transition-all ml-1.5 cursor-pointer flex items-center space-x-1 shadow-sm shrink-0"
+                title="Click to change or upload company logo"
               >
-                <Camera className="w-3.5 h-3.5" />
+                <Camera className="w-3 h-3 text-cyan-400" />
+                <span className="text-[10px] font-semibold">Change Logo</span>
               </button>
             )}
           </div>

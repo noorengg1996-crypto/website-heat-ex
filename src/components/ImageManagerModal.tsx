@@ -21,20 +21,22 @@ export const ImageManagerModal: React.FC = () => {
 
   const categories = [
     { id: 'all', label: `All (${allImagesList.length})` },
-    { id: 'retubing', label: 'Retubing 10 Steps (10)' },
     { id: 'brand', label: 'Brand Logo & Hero' },
+    { id: 'retubing', label: 'Retubing 10 Steps (10)' },
     { id: 'products', label: 'Products: Field & Shopfloor' },
-    { id: 'facility', label: 'Noor Engineering Works' },
+    { id: 'facility', label: 'Manufacturing Facility' },
   ];
 
   const filteredImages = allImagesList.filter((item) => {
     if (selectedFilter === 'all') return true;
-    if (selectedFilter === 'retubing') return item.category.includes('Retubing 10 Steps');
     if (selectedFilter === 'brand') return item.category.includes('Brand') || item.category.includes('Hero');
+    if (selectedFilter === 'retubing') return item.category.includes('Retubing 10 Steps');
     if (selectedFilter === 'products') return item.category.includes('Products') || item.category.includes('Bearing');
-    if (selectedFilter === 'facility') return item.category.includes('Facility') || item.category.includes('Noor');
+    if (selectedFilter === 'facility') return item.category.includes('Facility') || item.category.includes('Haridwar');
     return true;
   });
+
+  const logoSrc = getImage('site_logo');
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-2xl">
@@ -73,6 +75,36 @@ export const ImageManagerModal: React.FC = () => {
               <X className="w-5 h-5" />
             </button>
           </div>
+        </div>
+
+        {/* Company Logo Spotlight Bar */}
+        <div className="bg-gradient-to-r from-zinc-950 via-cyan-950/20 to-zinc-950 border border-cyan-500/30 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center space-x-4">
+            <div className="w-14 h-14 rounded-full bg-white/10 border border-white/20 p-1 flex items-center justify-center overflow-hidden shrink-0">
+              {logoSrc ? (
+                <img src={logoSrc} alt="Logo" className="w-full h-full object-contain" />
+              ) : (
+                <span className="text-white font-bold text-sm">NH</span>
+              )}
+            </div>
+            <div>
+              <div className="flex items-center space-x-2">
+                <span className="text-sm font-bold text-white">Company Firm Logo</span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan-500 text-black font-semibold">Active Brand</span>
+              </div>
+              <p className="text-xs text-zinc-400 mt-0.5">
+                Displays in the top navigation bar, header, and official documents.
+              </p>
+            </div>
+          </div>
+
+          <button
+            onClick={() => openEditor('site_logo', 'Company Firm Logo')}
+            className="w-full sm:w-auto px-5 py-2.5 rounded-full bg-cyan-500 hover:bg-cyan-400 text-black text-xs font-bold transition-all shadow flex items-center justify-center space-x-1.5 cursor-pointer"
+          >
+            <Camera className="w-4 h-4 text-black" />
+            <span>Change Company Logo</span>
+          </button>
         </div>
 
         {/* Filter Pills */}
