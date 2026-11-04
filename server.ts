@@ -154,7 +154,7 @@ app.post("/api/ai/chat", async (req, res) => {
       );
 
       const geminiPromise = activeAi.models.generateContent({
-        model: "gemini-2.5-flash",
+        model: "gemini-3.8-flash",
         contents: prompt,
         config: {
           systemInstruction: SYSTEM_INSTRUCTION,
@@ -164,7 +164,7 @@ app.post("/api/ai/chat", async (req, res) => {
       const response: any = await Promise.race([geminiPromise, timeoutPromise]);
       const reply = response?.text;
       if (reply && reply.trim()) {
-        return res.json({ reply, model: "gemini-2.5-flash" });
+        return res.json({ reply, model: "gemini-3.8-flash" });
       }
     } catch (err: any) {
       console.warn("Gemini API call fallback to instant aerospace engineering knowledge:", err?.message || err);
