@@ -103,7 +103,7 @@ function getDomainKnowledgeReply(prompt: string): string {
       `• **Length of Tube:** Configured from 1,000 mm up to 12,000 mm (12.0 meters) straight and U-tube lengths.\n` +
       `• **Total Exchanger Length:** Sized to match available plant layout, typically tube length + 600 mm to 1,500 mm for channel heads and rear bonnets.\n` +
       `• **Shell Diameter (Dia):** Available from 200 mm to 2,500 mm (8 inches to 98 inches) in ID (Inner Diameter) or OD (Outer Diameter).\n` +
-      `• **Tube Diameter & Gauge:** Standard sizes include 19.05 mm (3/4") and 25.4 mm (1") OD with 16 BWG (1.65 mm), 18 BWG (1.24 mm), or custom wall thicknesses in Cu-Ni, SS 316L, or Titanium.\n` +
+      `• **Tube Diameter & Gauge:** Standard sizes include 19.05 mm (3/4\") and 25.4 mm (1\") OD with 16 BWG (1.65 mm), 18 BWG (1.24 mm), or custom wall thicknesses in Cu-Ni, SS 316L, or Titanium.\n` +
       `• **Custom Sizing & Drawings:** You can enter your specific dimensions and attach your PDF/CAD drawing directly in our Inquiry section!`;
   } else if (lower.includes("drawing") || lower.includes("upload") || lower.includes("file") || lower.includes("cad")) {
     return `**Engineering Drawing & File Submission**\n\n` +
@@ -175,6 +175,12 @@ app.post("/api/ai/chat", async (req, res) => {
   const fallbackReply = getDomainKnowledgeReply(prompt);
   return res.json({ reply: fallbackReply, model: "northern-heatex-intelligence" });
 });
+
+// Serve static gallery, photos, and public assets reliably in all environments
+app.use("/gallery", express.static(path.resolve(__dirname, "public/gallery")));
+app.use("/photos", express.static(path.resolve(__dirname, "public/gallery")));
+app.use("/images", express.static(path.resolve(__dirname, "public/images")));
+app.use("/public", express.static(path.resolve(__dirname, "public")));
 
 // Setup Vite middleware in dev or static files in production
 async function startServer() {
